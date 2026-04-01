@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADC Optics — Kontakt & Rezervim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --coral: #FF5C3A; --yellow: #FFD23F; --mint: #2ECFA8;
+      --navy: #0F1B35; --cream: #FFF8F0; --white: #FFFFFF;
+      --gray: #8A8A8A; --lgray: #F2F0EC;
+      --display: 'Syne', sans-serif; --body: 'DM Sans', sans-serif;
+      --radius: 16px; --t: 0.3s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--navy); font-family: var(--body); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; width: 100%; object-fit: cover; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 68px;
+      background: var(--white); border-bottom: 2px solid var(--navy);
+    }
+    .nav-logo { font-family: var(--display); font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); }
+    .nav-logo .dot { color: var(--coral); }
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links li a {
+      display: block; padding: 0 1.2rem; height: 68px; line-height: 68px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gray); transition: color var(--t), background var(--t);
+      border-left: 1px solid transparent;
+    }
+    .nav-links li a:hover, .nav-links li a.active { color: var(--navy); background: var(--yellow); }
+    .nav-links li:first-child a { border-left: 2px solid var(--navy); }
+    .nav-btn {
+      background: var(--coral); color: var(--white); font-family: var(--body);
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.6rem 1.4rem; border: 2px solid var(--navy); transition: background var(--t);
+    }
+    .nav-btn:hover { background: var(--navy); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0;
+      background: var(--yellow); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--display); font-size: 2rem; font-weight: 700; color: var(--navy); }
+    .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--navy); font-weight: 700; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 8rem 4rem 5rem;
+      background: var(--yellow);
+      border-bottom: 2px solid var(--navy);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .hero-kicker { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--navy); opacity: 0.55; margin-bottom: 1rem; }
+    .page-title {
+      font-family: var(--display); font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 0.92;
+      color: var(--navy); margin-bottom: 1.5rem;
+    }
+    .page-title .outline { -webkit-text-stroke: 2.5px var(--navy); color: transparent; display: block; }
+    .page-sub { font-size: 0.95rem; color: var(--navy); opacity: 0.65; max-width: 400px; line-height: 1.75; margin-bottom: 2rem; }
+    .hero-chips { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--white); border: 2px solid var(--navy);
+      padding: 0.4rem 0.9rem; font-size: 0.72rem; font-weight: 500;
+      border-radius: 999px;
+    }
+    .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); }
+    .chip .dot.coral { background: var(--coral); }
+
+    /* Hero right — info cards stacked */
+    .hero-right { display: flex; flex-direction: column; gap: 1rem; }
+    .info-card {
+      background: var(--white); border: 2px solid var(--navy); border-radius: var(--radius);
+      padding: 1.5rem 1.8rem; display: flex; align-items: flex-start; gap: 1.2rem;
+      transition: transform var(--t);
+    }
+    .info-card:hover { transform: translateX(5px); }
+    .info-icon {
+      width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%;
+      border: 2px solid var(--navy); display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .info-icon.coral { background: var(--coral); }
+    .info-icon.mint  { background: var(--mint); }
+    .info-icon.yel   { background: var(--yellow); }
+    .info-icon.navy  { background: var(--navy); }
+    .info-label { font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gray); margin-bottom: 0.2rem; }
+    .info-val { font-size: 0.92rem; color: var(--navy); font-weight: 500; }
+    .info-sub { font-size: 0.72rem; color: var(--gray); margin-top: 0.15rem; }
+
+    /* ── BOOKING FORM ── */
+    .booking-section { padding: 5rem 4rem; background: var(--cream); }
+    .sec-kicker { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--coral); margin-bottom: 0.5rem; }
+    .sec-title { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 3rem; }
+
+    .booking-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start; }
+
+    /* Left column — store picker cards */
+    .store-picker { display: flex; flex-direction: column; gap: 1rem; }
+    .store-pick-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 0.5rem; }
+    .store-pick-card {
+      border: 2px solid rgba(15,27,53,0.15); border-radius: var(--radius);
+      padding: 1.2rem 1.4rem; cursor: pointer; transition: all var(--t);
+      background: var(--white);
+    }
+    .store-pick-card:hover { border-color: var(--navy); }
+    .store-pick-card.selected { border-color: var(--coral); background: #fff5f3; }
+    .store-pick-card.selected .spc-name { color: var(--coral); }
+    .spc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem; }
+    .spc-name { font-family: var(--display); font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .spc-badge {
+      font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0.2rem 0.55rem; border: 1.5px solid var(--navy); border-radius: 2px;
+    }
+    .spc-badge.main { background: var(--navy); color: var(--white); }
+    .spc-badge.new  { background: var(--mint); color: var(--navy); }
+    .spc-badge.sea  { background: var(--yellow); color: var(--navy); }
+    .spc-addr { font-size: 0.75rem; color: var(--gray); }
+    .spc-hours { font-size: 0.72rem; color: var(--navy); margin-top: 0.3rem; font-weight: 500; }
+    .spc-radio { display: none; }
+
+    /* Right — form */
+    .form-wrap { background: var(--white); border: 2px solid var(--navy); border-radius: var(--radius); overflow: hidden; }
+    .form-head { background: var(--coral); padding: 1.6rem 2rem; border-bottom: 2px solid var(--navy); display: flex; align-items: center; gap: 1rem; }
+    .form-head-icon { font-size: 1.5rem; }
+    .form-head h3 { font-family: var(--display); font-size: 1.2rem; font-weight: 800; color: var(--white); }
+    .form-head p { font-size: 0.72rem; color: rgba(255,255,255,0.75); margin-top: 0.1rem; }
+    .form-body { padding: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.63rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--cream); border: 1.5px solid rgba(15,27,53,0.18);
+      padding: 0.8rem 1rem; font-family: var(--body); font-size: 0.85rem;
+      color: var(--navy); border-radius: 10px; outline: none; width: 100%;
+      transition: border-color var(--t);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--coral); background: var(--white); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(15,27,53,0.28); }
+    .form-group textarea { resize: none; }
+    .form-group select option { background: var(--white); }
+    .form-group.full { grid-column: span 2; }
+    .form-submit {
+      width: 100%; background: var(--navy); color: var(--white);
+      border: 2px solid var(--navy); font-family: var(--body);
+      font-size: 0.85rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 1.1rem; cursor: pointer;
+      border-radius: 10px; transition: all var(--t); margin-top: 0.3rem;
+    }
+    .form-submit:hover { background: var(--coral); border-color: var(--coral); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-note { font-size: 0.68rem; color: var(--gray); text-align: center; margin-top: 0.5rem; }
+
+    /* Success state */
+    .form-success { display: none; padding: 4rem 2rem; text-align: center; }
+    .form-success.show { display: block; }
+    .success-icon {
+      width: 72px; height: 72px; background: var(--mint); border: 3px solid var(--navy);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 1.5rem;
+    }
+    .form-success h3 { font-family: var(--display); font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 0.6rem; }
+    .form-success p { font-size: 0.82rem; color: var(--gray); line-height: 1.7; max-width: 280px; margin: 0 auto 2rem; }
+    .back-btn {
+      display: inline-block; background: var(--navy); color: var(--white);
+      font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 0.8rem 1.8rem; border: 2px solid var(--navy); border-radius: 10px;
+      transition: all var(--t); cursor: pointer;
+    }
+    .back-btn:hover { background: var(--coral); border-color: var(--coral); }
+
+    /* ── FAQ ── */
+    .faq-section { padding: 5rem 4rem; background: var(--navy); }
+    .faq-section .sec-kicker { color: var(--mint); }
+    .faq-section .sec-title { color: var(--white); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); margin-top: 3rem; border: 1px solid rgba(255,255,255,0.08); }
+    .faq-item { padding: 2rem 2.2rem; background: var(--navy); cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.08); transition: background var(--t); }
+    .faq-item:hover { background: rgba(255,255,255,0.04); }
+    .faq-q { font-family: var(--display); font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.6rem; display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .faq-q .toggle { color: var(--coral); font-size: 1.2rem; flex-shrink: 0; transition: transform var(--t); }
+    .faq-a { font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.7; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .toggle { transform: rotate(45deg); }
+
+    /* ── SOCIALS ── */
+    .social-section { padding: 4rem; background: var(--coral); border-top: 2px solid var(--navy); border-bottom: 2px solid var(--navy); display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .social-text h3 { font-family: var(--display); font-size: 1.8rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+    .social-text p { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 0.3rem; }
+    .social-links { display: flex; gap: 1rem; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--white); color: var(--navy);
+      font-size: 0.78rem; font-weight: 600; padding: 0.75rem 1.5rem;
+      border: 2px solid var(--navy); border-radius: 999px; transition: all var(--t);
+    }
+    .social-btn:hover { background: var(--yellow); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); border-top: 2px solid rgba(255,255,255,0.1); padding: 3rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: var(--display); font-size: 1.3rem; font-weight: 800; color: var(--white); }
+    .footer-logo .dot { color: var(--coral); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); transition: color var(--t); }
+    .footer-links a:hover { color: var(--yellow); }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.25); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 0 2rem; }
+      .page-hero { grid-template-columns: 1fr; padding: 7rem 2rem 3rem; gap: 2.5rem; }
+      .booking-section, .faq-section, .social-section { padding: 4rem 2rem; }
+      .booking-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-btn { display: none; }
+      .nav-hamburger { display: flex; }
+      nav { padding: 0 1.5rem; }
+      .page-hero { padding: 7rem 1.5rem 3rem; }
+      .booking-section, .faq-section { padding: 3.5rem 1.5rem; }
+      .social-section { padding: 3rem 1.5rem; flex-direction: column; align-items: flex-start; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">ADC<span class="dot">.</span>Optics</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="koleksionet.html">Koleksionet</a></li>
+    <li><a href="sherbime.html">Shërbime</a></li>
+    <li><a href="dyqanet.html">Dyqanet</a></li>
+  </ul>
+  <a href="kontakt.html" class="nav-btn active" style="background:var(--navy);">Rezervo Vizitë</a>
+  <button class="nav-hamburger" onclick="document.getElementById('mob').classList.add('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mob">
+  <button class="mobile-close" onclick="document.getElementById('mob').classList.remove('open')">✕</button>
+  <a href="index.html"         onclick="document.getElementById('mob').classList.remove('open')">Home</a>
+  <a href="koleksionet.html"   onclick="document.getElementById('mob').classList.remove('open')">Koleksionet</a>
+  <a href="sherbime.html"      onclick="document.getElementById('mob').classList.remove('open')">Shërbime</a>
+  <a href="dyqanet.html"       onclick="document.getElementById('mob').classList.remove('open')">Dyqanet</a>
+  <a href="kontakt.html"       onclick="document.getElementById('mob').classList.remove('open')">Kontakt</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div>
+    <p class="hero-kicker">● Kontakt & Rezervim</p>
+    <h1 class="page-title">
+      Na thuaj<br>
+      <span class="outline">përshëndetje.</span>
+    </h1>
+    <p class="page-sub">Rezervo ekzaminimin tënd falas, porosit syze ose thjesht na dërgo një mesazh. Jemi këtu për ty çdo ditë.</p>
+    <div class="hero-chips">
+      <span class="chip"><span class="dot"></span> Ekzaminim Falas</span>
+      <span class="chip"><span class="dot coral"></span> Montim 1 Orë</span>
+      <span class="chip"><span class="dot"></span> Përgjigje Brenda 1 Ore</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="info-card">
+      <div class="info-icon coral">📞</div>
+      <div>
+        <div class="info-label">WhatsApp / Telefon</div>
+        <div class="info-val">+355 69 300 0001</div>
+        <div class="info-sub">E Hënë – E Shtunë, 09:00 – 20:00</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon mint">✉️</div>
+      <div>
+        <div class="info-label">Email</div>
+        <div class="info-val">info@adcoptics.al</div>
+        <div class="info-sub">Përgjigje brenda 2 orëve</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon yel">📍</div>
+      <div>
+        <div class="info-label">Dyqani Kryesor</div>
+        <div class="info-val">Rr. Pjetër Bogdani 4, Tiranë</div>
+        <div class="info-sub">Edhe Durrës & Vlorë — shiko dyqanet</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon navy">🕐</div>
+      <div>
+        <div class="info-label">Orari i Punës</div>
+        <div class="info-val">E Hënë – E Shtunë: 09:00 – 20:00</div>
+        <div class="info-sub">E Diel: 10:00 – 18:00</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section class="booking-section" id="booking">
+  <p class="sec-kicker">● Formulari i Rezervimit</p>
+  <h2 class="sec-title">Rezervo vizitën tënde</h2>
+
+  <div class="booking-grid">
+
+    <!-- Store picker -->
+    <div>
+      <p class="store-pick-label">1. Zgjidhni dyqanin</p>
+      <div class="store-picker">
+        <div class="store-pick-card selected" onclick="selectStore(this, 'Tiranë — Blloku')">
+          <div class="spc-top">
+            <div class="spc-name">Tiranë</div>
+            <span class="spc-badge main">Kryesor</span>
+          </div>
+          <div class="spc-addr">Rr. Pjetër Bogdani 4, Blloku</div>
+          <div class="spc-hours">09:00 – 20:00 · E Diel 10:00 – 18:00</div>
+        </div>
+        <div class="store-pick-card" onclick="selectStore(this, 'Durrës — Bulevardi Epidamn')">
+          <div class="spc-top">
+            <div class="spc-name">Durrës</div>
+            <span class="spc-badge new">I Ri</span>
+          </div>
+          <div class="spc-addr">Bulevardi Epidamn, Durrës</div>
+          <div class="spc-hours">09:00 – 19:30 · E Diel 10:00 – 17:00</div>
+        </div>
+        <div class="store-pick-card" onclick="selectStore(this, 'Vlorë — Bulevardi Ismail Qemali')">
+          <div class="spc-top">
+            <div class="spc-name">Vlorë</div>
+            <span class="spc-badge sea">Sezonale</span>
+          </div>
+          <div class="spc-addr">Bulevardi Ismail Qemali, Vlorë</div>
+          <div class="spc-hours">Prill – Tetor: 09:00 – 21:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div>
+      <div class="form-wrap">
+        <div class="form-head">
+          <div class="form-head-icon">📅</div>
+          <div>
+            <h3>Detajet e Rezervimit</h3>
+            <p>Konfirmojmë brenda 1 ore gjatë orarit të punës</p>
+          </div>
+        </div>
+
+        <div class="form-body" id="formBody">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Emri *</label>
+              <input type="text" id="fname" placeholder="Emri juaj">
+            </div>
+            <div class="form-group">
+              <label>Mbiemri *</label>
+              <input type="text" id="lname" placeholder="Mbiemri juaj">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Telefon *</label>
+              <input type="tel" id="phone" placeholder="+355 6X XXX XXXX">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="email@juaj.al">
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Shërbimi i Kërkuar *</label>
+            <select id="service">
+              <option value="">Zgjidhni shërbimin...</option>
+              <option>Ekzaminim i Syve (Falas)</option>
+              <option>Blerje Kornize + Thjerrëza</option>
+              <option>Lente Kontakti — Adaptim</option>
+              <option>Riparim / Rregullim Syze</option>
+              <option>Konsultim i Përgjithshëm</option>
+              <option>Tjetër</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Data e Preferuar</label>
+              <input type="date" id="date">
+            </div>
+            <div class="form-group">
+              <label>Ora e Preferuar</label>
+              <select id="time">
+                <option value="">Zgjidhni orën...</option>
+                <option>09:00 – 10:00</option>
+                <option>10:00 – 11:00</option>
+                <option>11:00 – 12:00</option>
+                <option>12:00 – 13:00</option>
+                <option>14:00 – 15:00</option>
+                <option>15:00 – 16:00</option>
+                <option>16:00 – 17:00</option>
+                <option>17:00 – 18:00</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Mesazh (opsional)</label>
+            <textarea id="message" rows="3" placeholder="Na trego nëse ke ndonjë kërkesë të veçantë ose pyetje..."></textarea>
+          </div>
+
+          <!-- Hidden: selected store -->
+          <input type="hidden" id="selectedStore" value="Tiranë — Blloku">
+
+          <button class="form-submit" id="submitBtn" onclick="submitForm()">
+            Rezervo Vizitën Falas →
+          </button>
+          <p class="form-note">* Fushat me yll janë të detyrueshme. Të dhënat tuaja janë konfidenciale.</p>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">✓</div>
+          <h3>Rezervimi u dërgua!</h3>
+          <p>Do t'ju kontaktojmë brenda <strong>1 ore</strong> për të konfirmuar orarin tuaj. Faleminderit!</p>
+          <button class="back-btn" onclick="resetForm()">Bëj Rezervim Tjetër</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <p class="sec-kicker">● Pyetje të Shpeshta</p>
+  <h2 class="sec-title" style="color:var(--white);">Keni pyetje?<br>Kemi përgjigje.</h2>
+  <div class="faq-grid">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">A është ekzaminimi vërtet falas? <span class="toggle">+</span></div>
+      <div class="faq-a">Po, ekzaminimi bazë i syve është plotësisht falas me çdo blerje kornize. Ekzaminimi Premium (me kontroll retine dhe presion okular) është 1,500 L dhe mund të rezervohet pavarësisht blerjes.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Sa kohë zgjat montimi i thjerrëzave? <span class="toggle">+</span></div>
+      <div class="faq-a">Thjerrëzat standarde montohen brenda 60 minutave direkt në dyqanin tonë. Për thjerrëza progressive ose me dioptrë të larta mund të duhen 2–3 orë.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">A pranoni sigurime shëndetësore? <span class="toggle">+</span></div>
+      <div class="faq-a">Po, punojmë me shumicën e sigurimeve private shëndetësore në Shqipëri. Na kontaktoni paraprakisht për të konfirmuar mbulimin e planit tuaj specifik.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Çfarë garancie kanë syzet? <span class="toggle">+</span></div>
+      <div class="faq-a">Të gjitha syzet optike vijnë me garanci 1 vit manufakture. Thjerrëzat kanë garanci 6 muaj për defekte. Paketa Premium dhe Familjare përfshijnë garanci të zgjatur deri 2 vjet.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">A mund të porosis online dhe ta marr në dyqan? <span class="toggle">+</span></div>
+      <div class="faq-a">Aktualisht shitja online nuk është e disponueshme, por mund të rezervoni produktin që ju intereson dhe ta tani duke vizituar dyqanin. Na kontaktoni për të reservuar një model specifik.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">A punoni edhe të dielave? <span class="toggle">+</span></div>
+      <div class="faq-a">Dyqani i Tiranës është hapur të dielave 10:00 – 18:00. Dyqani i Durrësit është hapur të dielave 10:00 – 17:00. Dyqani i Vlorës punon 7 ditë në javë gjatë sezonit (Prill – Tetor).</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">A keni syze edhe për fëmijë? <span class="toggle">+</span></div>
+      <div class="faq-a">Po, kemi koleksion të plotë për fëmijë nga mosha 3 deri 16 vjeç. Kornizat janë të certifikuara, rezistente dhe me mbrojtje UV400. Ekzaminimi për fëmijë është falas.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Sa shpejt merrni përgjigje pas dërgimit të formularit? <span class="toggle">+</span></div>
+      <div class="faq-a">Gjatë orarit të punës konfirmojmë rezervimin brenda 1 ore. Mesazhet e dërgura jashtë orarit konfirmohen të ditës tjetër të punës. Mund të na kontaktoni gjithashtu direkt në WhatsApp.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIALS -->
+<div class="social-section">
+  <div class="social-text">
+    <h3>Na ndiqni në Instagram</h3>
+    <p>Modele të reja, oferta dhe behind-the-scenes nga dyqanet tona.</p>
+  </div>
+  <div class="social-links">
+    <a href="#" class="social-btn">📷 @adcoptics.al</a>
+    <a href="#" class="social-btn">💬 WhatsApp</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ADC<span class="dot">.</span>Optics</div>
+  <ul class="footer-links">
+    <li><a href="koleksionet.html">Koleksionet</a></li>
+    <li><a href="sherbime.html">Shërbime</a></li>
+    <li><a href="dyqanet.html">Dyqanet</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+  </ul>
+  <div class="footer-copy">© 2024 ADC Optics. Të gjitha të drejtat e rezervuara.</div>
+</footer>
+
+<script>
+  // Store selection
+  let selectedStore = 'Tiranë — Blloku';
+
+  function selectStore(card, name) {
+    document.querySelectorAll('.store-pick-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedStore = name;
+    document.getElementById('selectedStore').value = name;
+  }
+
+  // Form submit
+  function submitForm() {
+    const fields = [
+      { id: 'fname',   val: document.getElementById('fname').value.trim() },
+      { id: 'lname',   val: document.getElementById('lname').value.trim() },
+      { id: 'phone',   val: document.getElementById('phone').value.trim() },
+      { id: 'service', val: document.getElementById('service').value },
+    ];
+
+    let valid = true;
+    fields.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (!f.val) {
+        el.style.borderColor = 'var(--coral)';
+        valid = false;
+      } else {
+        el.style.borderColor = '';
+      }
+    });
+
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Duke dërguar...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('formBody').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    }, 1300);
+  }
+
+  // Reset form
+  function resetForm() {
+    document.getElementById('formBody').style.display = 'flex';
+    document.getElementById('formSuccess').classList.remove('show');
+    document.getElementById('fname').value = '';
+    document.getElementById('lname').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('service').value = '';
+    document.getElementById('date').value = '';
+    document.getElementById('time').value = '';
+    document.getElementById('message').value = '';
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Rezervo Vizitën Falas →';
+    btn.disabled = false;
+  }
+
+  // FAQ accordion
+  function toggleFaq(item) {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Set min date to today
+  const dateInput = document.getElementById('date');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+</script>
+
+</body>
+</html>

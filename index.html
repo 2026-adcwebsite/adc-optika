@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADC Optics — Syzet e tua, Stili yt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --coral:   #FF5C3A;
+      --yellow:  #FFD23F;
+      --mint:    #2ECFA8;
+      --navy:    #0F1B35;
+      --cream:   #FFF8F0;
+      --white:   #FFFFFF;
+      --gray:    #8A8A8A;
+      --lgray:   #F2F0EC;
+      --display: 'Syne', sans-serif;
+      --body:    'DM Sans', sans-serif;
+      --radius:  16px;
+      --t: 0.3s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--navy); font-family: var(--body); font-weight: 400; line-height: 1.6; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; width: 100%; object-fit: cover; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 68px;
+      background: var(--white);
+      border-bottom: 2px solid var(--navy);
+    }
+    .nav-logo {
+      font-family: var(--display); font-size: 1.4rem; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--navy);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .nav-logo .dot { color: var(--coral); }
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links li a {
+      display: block; padding: 0 1.2rem; height: 68px; line-height: 68px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gray); transition: color var(--t), background var(--t);
+      border-left: 1px solid transparent;
+    }
+    .nav-links li a:hover, .nav-links li a.active {
+      color: var(--navy); background: var(--yellow);
+    }
+    .nav-links li:first-child a { border-left: 2px solid var(--navy); }
+    .nav-btn {
+      background: var(--coral); color: var(--white);
+      font-family: var(--body); font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.6rem 1.4rem; border: 2px solid var(--navy);
+      transition: background var(--t), color var(--t);
+    }
+    .nav-btn:hover { background: var(--navy); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); }
+    .mobile-menu { display: none; position: fixed; inset: 0; background: var(--yellow); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--display); font-size: 2rem; font-weight: 700; color: var(--navy); }
+    .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--navy); font-weight: 700; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; padding-top: 68px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+    .hero-left {
+      padding: 5rem 3rem 5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+      background: var(--cream); position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--yellow); border: 2px solid var(--navy);
+      padding: 0.35rem 0.9rem; font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 2rem; width: fit-content;
+    }
+    .hero-badge::before { content: '●'; color: var(--coral); font-size: 0.5rem; }
+    .hero-h1 {
+      font-family: var(--display); font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800; line-height: 0.95; letter-spacing: -0.03em;
+      margin-bottom: 1.8rem; color: var(--navy);
+    }
+    .hero-h1 .accent { color: var(--coral); display: block; }
+    .hero-h1 .outline {
+      -webkit-text-stroke: 2px var(--navy); color: transparent; display: block;
+    }
+    .hero-sub { font-size: 1rem; color: var(--gray); max-width: 380px; margin-bottom: 2.5rem; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-solid {
+      background: var(--navy); color: var(--white);
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.9rem 2rem; border: 2px solid var(--navy); transition: all var(--t);
+    }
+    .btn-solid:hover { background: var(--coral); border-color: var(--coral); }
+    .btn-outline {
+      background: transparent; color: var(--navy);
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.9rem 2rem; border: 2px solid var(--navy); transition: all var(--t);
+    }
+    .btn-outline:hover { background: var(--yellow); }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3rem;
+      padding-top: 2rem; border-top: 1px solid rgba(15,27,53,0.15);
+    }
+    .hero-stat-num { font-family: var(--display); font-size: 2rem; font-weight: 800; color: var(--coral); line-height: 1; }
+    .hero-stat-label { font-size: 0.72rem; color: var(--gray); margin-top: 0.2rem; }
+    .hero-right {
+      position: relative; background: var(--navy);
+      display: flex; align-items: stretch;
+    }
+    .hero-img { width: 100%; height: 100%; min-height: 400px; object-fit: cover; opacity: 0.85; }
+    .hero-img-tag {
+      position: absolute; bottom: 2rem; left: 2rem;
+      background: var(--yellow); border: 2px solid var(--navy);
+      padding: 0.8rem 1.2rem;
+    }
+    .hero-img-tag p { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--navy); font-weight: 500; }
+    .hero-img-tag span { font-family: var(--display); font-size: 1.1rem; font-weight: 800; color: var(--navy); }
+    .hero-shape {
+      position: absolute; top: 2rem; right: 2rem;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--coral); border: 2px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em; color: var(--white);
+      text-align: center; line-height: 1.3;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      border-top: 2px solid var(--navy); border-bottom: 2px solid var(--navy);
+      background: var(--coral); overflow: hidden; padding: 0.9rem 0;
+    }
+    .marquee-track {
+      display: flex; gap: 3rem; width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-track span {
+      font-family: var(--display); font-size: 0.9rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--white);
+      white-space: nowrap; display: flex; align-items: center; gap: 1rem;
+    }
+    .marquee-track span::after { content: '✦'; color: var(--yellow); font-size: 0.7rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── BRANDS ── */
+    .brands { padding: 4rem; background: var(--white); border-bottom: 2px solid var(--navy); }
+    .brands-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gray); text-align: center; margin-bottom: 2rem; font-weight: 500; }
+    .brands-row { display: flex; gap: 0; justify-content: center; flex-wrap: wrap; }
+    .brand-item {
+      padding: 1rem 2.5rem; border: 1px solid rgba(15,27,53,0.12);
+      font-family: var(--display); font-size: 1.1rem; font-weight: 700;
+      color: rgba(15,27,53,0.3); letter-spacing: -0.01em;
+      transition: all var(--t); cursor: default;
+    }
+    .brand-item:hover { color: var(--navy); background: var(--yellow); border-color: var(--navy); }
+
+    /* ── COLLECTIONS PREVIEW ── */
+    .collections { padding: 5rem 4rem; background: var(--cream); }
+    .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; }
+    .section-label { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--coral); margin-bottom: 0.5rem; }
+    .section-title { font-family: var(--display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+    .link-underline { font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--navy); border-bottom: 2px solid var(--coral); padding-bottom: 2px; transition: color var(--t); }
+    .link-underline:hover { color: var(--coral); }
+    .coll-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 1.5rem; }
+    .coll-card {
+      position: relative; overflow: hidden; border: 2px solid var(--navy);
+      border-radius: var(--radius); cursor: pointer;
+    }
+    .coll-card img { height: 320px; transition: transform 0.5s ease; }
+    .coll-card:hover img { transform: scale(1.06); }
+    .coll-card.large img { height: 420px; }
+    .coll-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem; background: linear-gradient(to top, rgba(15,27,53,0.9) 0%, transparent 100%);
+    }
+    .coll-tag { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--yellow); margin-bottom: 0.3rem; font-weight: 500; }
+    .coll-name { font-family: var(--display); font-size: 1.3rem; font-weight: 700; color: var(--white); }
+    .coll-count { font-size: 0.72rem; color: rgba(255,255,255,0.6); margin-top: 0.2rem; }
+    .coll-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--coral); color: var(--white);
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.3rem 0.7rem; border: 1.5px solid var(--navy);
+    }
+
+    /* ── SERVICES STRIP ── */
+    .services-strip { padding: 5rem 4rem; background: var(--navy); }
+    .services-strip .section-title { color: var(--white); }
+    .services-strip .section-label { color: var(--mint); }
+    .srv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 3rem; border: 2px solid rgba(255,255,255,0.1); }
+    .srv-card {
+      padding: 2.5rem 2rem; border-right: 1px solid rgba(255,255,255,0.1);
+      transition: background var(--t);
+    }
+    .srv-card:last-child { border-right: none; }
+    .srv-card:hover { background: rgba(255,255,255,0.05); }
+    .srv-icon { font-size: 2rem; margin-bottom: 1.2rem; }
+    .srv-title { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.6rem; }
+    .srv-desc { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+    /* ── WHY US ── */
+    .why { padding: 5rem 4rem; background: var(--yellow); border-top: 2px solid var(--navy); border-bottom: 2px solid var(--navy); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .why-img-wrap { position: relative; }
+    .why-img { border: 3px solid var(--navy); border-radius: var(--radius); aspect-ratio: 4/5; object-fit: cover; }
+    .why-sticker {
+      position: absolute; top: -1.5rem; right: -1.5rem;
+      width: 110px; height: 110px; background: var(--coral);
+      border: 2.5px solid var(--navy); border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .why-sticker-num { font-family: var(--display); font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1; }
+    .why-sticker-text { font-size: 0.55rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--white); text-align: center; }
+    .why-content .section-label { color: var(--coral); }
+    .why-content .section-title { color: var(--navy); margin-bottom: 1.5rem; }
+    .why-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .why-list li { display: flex; gap: 1rem; align-items: flex-start; font-size: 0.88rem; color: var(--navy); }
+    .why-list li::before { content: '→'; color: var(--coral); font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+
+    /* ── STORES PREVIEW ── */
+    .stores-prev { padding: 5rem 4rem; background: var(--cream); }
+    .stores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .store-card {
+      border: 2px solid var(--navy); border-radius: var(--radius);
+      overflow: hidden; transition: transform var(--t);
+    }
+    .store-card:hover { transform: translateY(-4px); }
+    .store-card img { height: 200px; }
+    .store-body { padding: 1.5rem; background: var(--white); }
+    .store-city { font-family: var(--display); font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 0.3rem; }
+    .store-addr { font-size: 0.78rem; color: var(--gray); margin-bottom: 0.8rem; }
+    .store-tag { display: inline-block; background: var(--mint); color: var(--navy); font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.7rem; border: 1.5px solid var(--navy); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); border-top: 2px solid rgba(255,255,255,0.1); padding: 3rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: var(--display); font-size: 1.3rem; font-weight: 800; color: var(--white); }
+    .footer-logo .dot { color: var(--coral); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); transition: color var(--t); }
+    .footer-links a:hover { color: var(--yellow); }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.25); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 0 2rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 340px; }
+      .hero-left { padding: 4rem 2rem; }
+      .coll-grid { grid-template-columns: 1fr 1fr; }
+      .coll-card.large { grid-column: span 2; }
+      .coll-card.large img { height: 320px; }
+      .srv-grid { grid-template-columns: 1fr 1fr; }
+      .srv-card:nth-child(2) { border-right: none; }
+      .srv-card:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); }
+      .srv-card:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.1); }
+      .collections, .services-strip, .why, .stores-prev, .brands { padding: 4rem 2rem; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-btn { display: none; }
+      .nav-hamburger { display: flex; }
+      nav { padding: 0 1.5rem; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .hero-stats { gap: 1.5rem; }
+      .coll-grid { grid-template-columns: 1fr; }
+      .coll-card.large { grid-column: span 1; }
+      .srv-grid { grid-template-columns: 1fr; }
+      .srv-card { border-right: none !important; border-top: 1px solid rgba(255,255,255,0.1); }
+      .srv-card:first-child { border-top: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .stores-grid { grid-template-columns: 1fr; }
+      .collections, .services-strip, .why, .stores-prev, .brands { padding: 3.5rem 1.5rem; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ADC<span class="dot">.</span>Optics</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="koleksionet.html">Koleksionet</a></li>
+    <li><a href="sherbime.html">Shërbime</a></li>
+    <li><a href="dyqanet.html">Dyqanet</a></li>
+  </ul>
+  <a href="kontakt.html" class="nav-btn">Rezervo Vizitë</a>
+  <button class="nav-hamburger" onclick="document.getElementById('mob').classList.add('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mob">
+  <button class="mobile-close" onclick="document.getElementById('mob').classList.remove('open')">✕</button>
+  <a href="index.html" onclick="document.getElementById('mob').classList.remove('open')">Home</a>
+  <a href="koleksionet.html" onclick="document.getElementById('mob').classList.remove('open')">Koleksionet</a>
+  <a href="sherbime.html" onclick="document.getElementById('mob').classList.remove('open')">Shërbime</a>
+  <a href="dyqanet.html" onclick="document.getElementById('mob').classList.remove('open')">Dyqanet</a>
+  <a href="kontakt.html" onclick="document.getElementById('mob').classList.remove('open')">Kontakt</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Koleksioni i Ri 2024</div>
+    <h1 class="hero-h1">
+      Shiko
+      <span class="accent">Ndryshe.</span>
+      <span class="outline">Jetonë</span>
+      Ndryshe.
+    </h1>
+    <p class="hero-sub">Syze dielli dhe optike premium nga brendet më të mira botërore. 3 dyqane në Shqipëri, ekzaminim falas, stil i garantuar.</p>
+    <div class="hero-actions">
+      <a href="koleksionet.html" class="btn-solid">Shiko Koleksionin</a>
+      <a href="sherbime.html" class="btn-outline">Ekzaminim Falas →</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">3</div><div class="hero-stat-label">Dyqane</div></div>
+      <div><div class="hero-stat-num">500+</div><div class="hero-stat-label">Modele</div></div>
+      <div><div class="hero-stat-num">15k+</div><div class="hero-stat-label">Klientë</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1508296695146-257a814070b4?w=900&q=85" alt="ADC Optics hero">
+    <div class="hero-img-tag">
+      <p>Modeli i Javës</p>
+      <span>Ray-Ban Classics</span>
+    </div>
+    <div class="hero-shape">Fara<br>Online</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Syze Dielli</span><span>Optikë</span><span>Ray-Ban</span>
+    <span>Oakley</span><span>Gucci</span><span>Tom Ford</span>
+    <span>Ekzaminim Falas</span><span>Montim në 1 Orë</span>
+    <span>Syze Dielli</span><span>Optikë</span><span>Ray-Ban</span>
+    <span>Oakley</span><span>Gucci</span><span>Tom Ford</span>
+    <span>Ekzaminim Falas</span><span>Montim në 1 Orë</span>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<section class="brands">
+  <p class="brands-label">Brendet që gjeni tek ne</p>
+  <div class="brands-row">
+    <div class="brand-item">Ray-Ban</div>
+    <div class="brand-item">Oakley</div>
+    <div class="brand-item">Gucci</div>
+    <div class="brand-item">Tom Ford</div>
+    <div class="brand-item">Persol</div>
+    <div class="brand-item">Prada</div>
+    <div class="brand-item">Carrera</div>
+  </div>
+</section>
+
+<!-- COLLECTIONS PREVIEW -->
+<section class="collections">
+  <div class="section-header">
+    <div>
+      <p class="section-label">● Koleksionet</p>
+      <h2 class="section-title">Gji stilin<br>tënd perfect</h2>
+    </div>
+    <a href="koleksionet.html" class="link-underline">Shiko të gjitha →</a>
+  </div>
+  <div class="coll-grid">
+    <div class="coll-card large">
+      <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=900&q=85" alt="Syze Dielli Premium">
+      <div class="coll-info">
+        <div class="coll-tag">● Koleksioni Kryesor</div>
+        <div class="coll-name">Syze Dielli Premium</div>
+        <div class="coll-count">120+ modele · Ray-Ban, Gucci, Tom Ford</div>
+      </div>
+      <div class="coll-badge">I Ri 2024</div>
+    </div>
+    <div class="coll-card">
+      <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=600&q=85" alt="Korniza Optike">
+      <div class="coll-info">
+        <div class="coll-tag">● Optikë</div>
+        <div class="coll-name">Korniza Optike</div>
+        <div class="coll-count">200+ korniza</div>
+      </div>
+    </div>
+    <div class="coll-card">
+      <img src="https://images.unsplash.com/photo-1508296695146-257a814070b4?w=600&q=85" alt="Sport & Outdoor">
+      <div class="coll-info">
+        <div class="coll-tag">● Sport</div>
+        <div class="coll-name">Sport & Outdoor</div>
+        <div class="coll-count">Oakley, Rudy Project</div>
+      </div>
+      <div class="coll-badge" style="background:var(--mint);color:var(--navy);">−20%</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES STRIP -->
+<section class="services-strip">
+  <p class="section-label">● Shërbimet Tona</p>
+  <h2 class="section-title" style="color:var(--white);">Çfarë ofrojmë</h2>
+  <div class="srv-grid">
+    <div class="srv-card">
+      <div class="srv-icon">👁️</div>
+      <div class="srv-title">Ekzaminim Falas</div>
+      <p class="srv-desc">Testim professional i syve me aparat modern, pa pagesë me çdo blerje kornize.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">⚡</div>
+      <div class="srv-title">Montim në 1 Orë</div>
+      <p class="srv-desc">Thjerrëzat tuaja montohen brenda 60 minutave direkt në dyqanin tonë.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">🔧</div>
+      <div class="srv-title">Riparim & Rregullim</div>
+      <p class="srv-desc">Rregullim kornizash, ndërrimi i thjerrëzave dhe çdo riparim i nevojshëm.</p>
+    </div>
+    <div class="srv-card">
+      <div class="srv-icon">🚚</div>
+      <div class="srv-title">Dorëzim në Shtëpi</div>
+      <p class="srv-desc">Porosit online dhe merr syzet tuaja direkt në derë, kudo në Shqipëri.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why">
+  <div class="why-grid">
+    <div class="why-img-wrap">
+      <img class="why-img" src="https://images.unsplash.com/photo-1592439212878-6f8dd5dfec21?w=700&q=85" alt="Dyqani ADC Optics">
+      <div class="why-sticker">
+        <div class="why-sticker-num">10+</div>
+        <div class="why-sticker-text">Vite<br>Eksperiencë</div>
+      </div>
+    </div>
+    <div class="why-content">
+      <p class="section-label">● Pse ADC Optics</p>
+      <h2 class="section-title">Më shumë se<br>një dyqan syze</h2>
+      <ul class="why-list" style="margin-bottom:2rem;">
+        <li>Staf i certifikuar optometrist me 10+ vite eksperiencë</li>
+        <li>Mbi 500 modele nga brendet premium botërore</li>
+        <li>Teknologji moderne për testim të saktë të syve</li>
+        <li>Garanci 2 vjeçare për të gjitha produktet</li>
+        <li>Shërbim pas-blerje dhe follow-up falas</li>
+      </ul>
+      <a href="sherbime.html" class="btn-solid">Mëso Më Shumë</a>
+    </div>
+  </div>
+</section>
+
+<!-- STORES PREVIEW -->
+<section class="stores-prev">
+  <div class="section-header">
+    <div>
+      <p class="section-label">● Dyqanet Tona</p>
+      <h2 class="section-title">Gjendemi<br>afër jush</h2>
+    </div>
+    <a href="dyqanet.html" class="link-underline">Të gjitha dyqanet →</a>
+  </div>
+  <div class="stores-grid">
+    <div class="store-card">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80" alt="Tiranë">
+      <div class="store-body">
+        <div class="store-city">Tiranë — Blloku</div>
+        <div class="store-addr">Rr. Pjetër Bogdani 4, Tiranë</div>
+        <div class="store-tag">Kryedyqani</div>
+      </div>
+    </div>
+    <div class="store-card">
+      <img src="https://images.unsplash.com/photo-1521322800607-8c38375eef04?w=600&q=80" alt="Durrës">
+      <div class="store-body">
+        <div class="store-city">Durrës</div>
+        <div class="store-addr">Bulevardi Epidamn, Durrës</div>
+        <div class="store-tag">I Hapur së Fundmi</div>
+      </div>
+    </div>
+    <div class="store-card">
+      <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&q=80" alt="Vlorë">
+      <div class="store-body">
+        <div class="store-city">Vlorë</div>
+        <div class="store-addr">Bulevardi Ismail Qemali, Vlorë</div>
+        <div class="store-tag">Sezonale</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ADC<span class="dot">.</span>Optics</div>
+  <ul class="footer-links">
+    <li><a href="koleksionet.html">Koleksionet</a></li>
+    <li><a href="sherbime.html">Shërbime</a></li>
+    <li><a href="dyqanet.html">Dyqanet</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+  </ul>
+  <div class="footer-copy">© 2024 ADC Optics. Të gjitha të drejtat e rezervuara.</div>
+</footer>
+
+</body>
+</html>

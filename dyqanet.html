@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADC Optics — Dyqanet & Kontakt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --coral: #FF5C3A; --yellow: #FFD23F; --mint: #2ECFA8;
+      --navy: #0F1B35; --cream: #FFF8F0; --white: #FFFFFF;
+      --gray: #8A8A8A; --lgray: #F2F0EC;
+      --display: 'Syne', sans-serif; --body: 'DM Sans', sans-serif;
+      --radius: 16px; --t: 0.3s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--navy); font-family: var(--body); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; width: 100%; object-fit: cover; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 68px; background: var(--white); border-bottom: 2px solid var(--navy); }
+    .nav-logo { font-family: var(--display); font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); }
+    .nav-logo .dot { color: var(--coral); }
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links li a { display: block; padding: 0 1.2rem; height: 68px; line-height: 68px; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray); transition: color var(--t), background var(--t); border-left: 1px solid transparent; }
+    .nav-links li a:hover, .nav-links li a.active { color: var(--navy); background: var(--yellow); }
+    .nav-links li:first-child a { border-left: 2px solid var(--navy); }
+    .nav-btn { background: var(--coral); color: var(--white); font-family: var(--body); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.6rem 1.4rem; border: 2px solid var(--navy); transition: background var(--t); }
+    .nav-btn:hover { background: var(--navy); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); }
+    .mobile-menu { display: none; position: fixed; inset: 0; background: var(--yellow); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--display); font-size: 2rem; font-weight: 700; color: var(--navy); }
+    .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--navy); font-weight: 700; }
+
+    /* PAGE HERO */
+    .page-hero { padding: 8rem 4rem 5rem; background: var(--coral); border-bottom: 2px solid var(--navy); }
+    .hero-kicker { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.7); margin-bottom: 1rem; }
+    .page-title { font-family: var(--display); font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 0.95; color: var(--white); margin-bottom: 1.5rem; }
+    .page-title .ac { -webkit-text-stroke: 2px var(--white); color: transparent; }
+    .page-sub { font-size: 0.95rem; color: rgba(255,255,255,0.75); max-width: 450px; line-height: 1.7; }
+
+    /* STORES */
+    .stores-section { padding: 5rem 4rem; background: var(--cream); }
+    .section-kicker { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--coral); margin-bottom: 0.5rem; }
+    .section-title { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 3rem; }
+
+    /* STORE CARDS — BIG */
+    .store-big { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--navy); border-radius: var(--radius); overflow: hidden; margin-bottom: 2rem; background: var(--white); }
+    .store-big-img img { height: 100%; min-height: 340px; }
+    .store-big-body { padding: 3rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .store-flag { display: inline-flex; gap: 0.5rem; align-items: center; background: var(--navy); color: var(--white); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.3rem 0.8rem; margin-bottom: 1.5rem; border-radius: 2px; }
+    .store-city-name { font-family: var(--display); font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); line-height: 1; margin-bottom: 0.5rem; }
+    .store-tagline { font-size: 0.82rem; color: var(--coral); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.5rem; }
+    .store-details { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+    .store-detail-row { display: flex; gap: 1rem; align-items: flex-start; font-size: 0.82rem; }
+    .store-detail-label { font-weight: 500; color: var(--gray); min-width: 70px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .store-detail-val { color: var(--navy); }
+    .store-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-solid { display: inline-block; background: var(--navy); color: var(--white); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.8rem 1.6rem; border: 2px solid var(--navy); transition: all var(--t); }
+    .btn-solid:hover { background: var(--coral); border-color: var(--coral); }
+    .btn-outline { display: inline-block; background: transparent; color: var(--navy); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.8rem 1.6rem; border: 2px solid var(--navy); transition: all var(--t); }
+    .btn-outline:hover { background: var(--yellow); }
+
+    .store-grid-small { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .store-sm-card { border: 2px solid var(--navy); border-radius: var(--radius); overflow: hidden; background: var(--white); transition: transform var(--t); }
+    .store-sm-card:hover { transform: translateY(-4px); }
+    .store-sm-card img { height: 200px; }
+    .store-sm-body { padding: 1.8rem; }
+    .store-sm-city { font-family: var(--display); font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 0.3rem; }
+    .store-sm-tag { display: inline-block; background: var(--mint); color: var(--navy); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.7rem; border: 1.5px solid var(--navy); margin-bottom: 1rem; }
+    .store-sm-tag.coral { background: var(--yellow); }
+    .store-sm-details { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .store-sm-row { font-size: 0.78rem; color: var(--gray); display: flex; gap: 0.6rem; }
+    .store-sm-row span { color: var(--navy); font-weight: 500; }
+
+    /* BOOKING SECTION */
+    .booking-section { padding: 5rem 4rem; background: var(--navy); }
+    .booking-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+    .booking-info .section-title { color: var(--white); }
+    .booking-info .section-kicker { color: var(--mint); }
+    .booking-sub { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 2rem; }
+    .contact-cards { display: flex; flex-direction: column; gap: 0; }
+    .contact-card { padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); border-bottom: none; transition: background var(--t); }
+    .contact-card:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .contact-card:hover { background: rgba(255,255,255,0.05); }
+    .contact-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--mint); margin-bottom: 0.3rem; font-weight: 500; }
+    .contact-val { font-size: 0.9rem; color: var(--white); }
+    .contact-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem; }
+
+    /* FORM */
+    .booking-form { background: var(--white); border: 2px solid rgba(255,255,255,0.2); border-radius: var(--radius); overflow: hidden; }
+    .form-head { background: var(--yellow); padding: 1.5rem 2rem; border-bottom: 2px solid var(--navy); }
+    .form-head h3 { font-family: var(--display); font-size: 1.2rem; font-weight: 800; color: var(--navy); }
+    .form-head p { font-size: 0.75rem; color: var(--navy); opacity: 0.65; margin-top: 0.2rem; }
+    .form-body { padding: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--cream); border: 1.5px solid rgba(15,27,53,0.15);
+      padding: 0.75rem 1rem; font-family: var(--body); font-size: 0.85rem;
+      color: var(--navy); border-radius: 8px; outline: none; width: 100%;
+      transition: border-color var(--t);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--coral); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(15,27,53,0.3); }
+    .form-group select option { background: var(--white); }
+    .form-group textarea { resize: none; }
+    .form-submit { width: 100%; background: var(--coral); color: var(--white); border: 2px solid var(--navy); font-family: var(--body); font-size: 0.82rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 1rem; cursor: pointer; transition: background var(--t); border-radius: 8px; margin-top: 0.5rem; }
+    .form-submit:hover { background: var(--navy); }
+    .form-success { display: none; padding: 3rem 2rem; text-align: center; }
+    .form-success.show { display: block; }
+    .form-success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .form-success h3 { font-family: var(--display); font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-bottom: 0.5rem; }
+    .form-success p { font-size: 0.8rem; color: var(--gray); }
+
+    /* MAP PLACEHOLDER */
+    .map-section { padding: 0 4rem 5rem; background: var(--cream); }
+    .map-wrap { border: 2px solid var(--navy); border-radius: var(--radius); overflow: hidden; }
+    .map-tabs { display: flex; background: var(--navy); }
+    .map-tab { padding: 1rem 1.5rem; font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); cursor: pointer; border-right: 1px solid rgba(255,255,255,0.1); transition: all var(--t); }
+    .map-tab:hover, .map-tab.active { color: var(--yellow); background: rgba(255,255,255,0.05); }
+    .map-placeholder { height: 300px; background: var(--lgray); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; }
+    .map-placeholder .map-pin { font-size: 2.5rem; }
+    .map-placeholder p { font-size: 0.78rem; color: var(--gray); font-weight: 500; }
+    .map-placeholder small { font-size: 0.65rem; color: var(--gray); opacity: 0.6; }
+
+    footer { background: var(--navy); border-top: 2px solid rgba(255,255,255,0.1); padding: 3rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: var(--display); font-size: 1.3rem; font-weight: 800; color: var(--white); }
+    .footer-logo .dot { color: var(--coral); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); transition: color var(--t); }
+    .footer-links a:hover { color: var(--yellow); }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.25); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 0 2rem; }
+      .page-hero, .stores-section, .booking-section, .map-section { padding-left: 2rem; padding-right: 2rem; }
+      .store-big { grid-template-columns: 1fr; }
+      .store-big-img img { min-height: 250px; }
+      .booking-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-btn { display: none; }
+      .nav-hamburger { display: flex; }
+      nav { padding: 0 1.5rem; }
+      .page-hero { padding: 8rem 1.5rem 3rem; }
+      .stores-section, .booking-section, .map-section { padding: 3.5rem 1.5rem; }
+      .store-grid-small { grid-template-columns: 1fr; }
+      .form-row-2 { grid-template-columns: 1fr; }
+      .store-actions { flex-direction: column; }
+      .map-section { padding: 0 1.5rem 3.5rem; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ADC<span class="dot">.</span>Optics</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="koleksionet.html">Koleksionet</a></li>
+    <li><a href="sherbime.html">Shërbime</a></li>
+    <li><a href="dyqanet.html" class="active">Dyqanet</a></li>
+  </ul>
+  <a href="kontakt.html" class="nav-btn">Rezervo Vizitë</a>
+  <button class="nav-hamburger" onclick="document.getElementById('mob').classList.add('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mob">
+  <button class="mobile-close" onclick="document.getElementById('mob').classList.remove('open')">✕</button>
+  <a href="index.html" onclick="document.getElementById('mob').classList.remove('open')">Home</a>
+  <a href="koleksionet.html" onclick="document.getElementById('mob').classList.remove('open')">Koleksionet</a>
+  <a href="sherbime.html" onclick="document.getElementById('mob').classList.remove('open')">Shërbime</a>
+  <a href="dyqanet.html" onclick="document.getElementById('mob').classList.remove('open')">Dyqanet</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <p class="hero-kicker">● 3 Dyqane në Shqipëri</p>
+  <h1 class="page-title">Gjendemi<br><span class="ac">gjithkund</span><br>afër jush.</h1>
+  <p class="page-sub">Tiranë, Durrës dhe Vlorë — tre dyqane të pajisura me teknologji moderne, staf të certifikuar dhe koleksionin më të plotë optik.</p>
+</section>
+
+<!-- STORES -->
+<section class="stores-section">
+  <p class="section-kicker">● Dyqanet Tona</p>
+  <h2 class="section-title">Gjej dyqanin<br>më afër teje</h2>
+
+  <!-- TIRANA — BIG -->
+  <div class="store-big">
+    <div class="store-big-img">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&q=85" alt="ADC Optics Tiranë">
+    </div>
+    <div class="store-big-body">
+      <div>
+        <div class="store-flag">★ Kryedyqani</div>
+        <div class="store-city-name">Tiranë</div>
+        <div class="store-tagline">Blloku — Dyqani Kryesor</div>
+        <div class="store-details">
+          <div class="store-detail-row">
+            <span class="store-detail-label">Adresa</span>
+            <span class="store-detail-val">Rr. Pjetër Bogdani 4, Blloku, Tiranë 1001</span>
+          </div>
+          <div class="store-detail-row">
+            <span class="store-detail-label">Tel</span>
+            <span class="store-detail-val">+355 69 300 0001</span>
+          </div>
+          <div class="store-detail-row">
+            <span class="store-detail-label">Orari</span>
+            <span class="store-detail-val">E Hënë – E Shtunë: 09:00 – 20:00<br>E Diel: 10:00 – 18:00</span>
+          </div>
+          <div class="store-detail-row">
+            <span class="store-detail-label">Shërbime</span>
+            <span class="store-detail-val">Ekzaminim, Montim 1 orë, Lente kontakti, Riparim</span>
+          </div>
+        </div>
+      </div>
+      <div class="store-actions">
+        <a href="#booking" class="btn-solid">Rezervo Vizitë</a>
+        <a href="#map" class="btn-outline">Shiko Hartën</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DURRES + VLORE — SMALL -->
+  <div class="store-grid-small">
+    <div class="store-sm-card">
+      <img src="https://images.unsplash.com/photo-1521322800607-8c38375eef04?w=700&q=85" alt="ADC Optics Durrës">
+      <div class="store-sm-body">
+        <div class="store-sm-city">Durrës</div>
+        <div class="store-sm-tag">I Hapur Rishtazi</div>
+        <div class="store-sm-details">
+          <div class="store-sm-row">📍 <span>Bulevardi Epidamn, Durrës 2001</span></div>
+          <div class="store-sm-row">📞 <span>+355 69 300 0002</span></div>
+          <div class="store-sm-row">🕐 <span>E Hënë–E Shtunë: 09:00–19:30</span></div>
+        </div>
+        <div class="store-actions">
+          <a href="#booking" class="btn-solid" style="font-size:0.72rem;padding:0.7rem 1.2rem;">Rezervo</a>
+          <a href="#map" class="btn-outline" style="font-size:0.72rem;padding:0.7rem 1.2rem;">Harta</a>
+        </div>
+      </div>
+    </div>
+    <div class="store-sm-card">
+      <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=700&q=85" alt="ADC Optics Vlorë">
+      <div class="store-sm-body">
+        <div class="store-sm-city">Vlorë</div>
+        <div class="store-sm-tag coral">Sezonale</div>
+        <div class="store-sm-details">
+          <div class="store-sm-row">📍 <span>Bulevardi Ismail Qemali, Vlorë 9401</span></div>
+          <div class="store-sm-row">📞 <span>+355 69 300 0003</span></div>
+          <div class="store-sm-row">🕐 <span>Prill – Tetor: 09:00–21:00</span></div>
+        </div>
+        <div class="store-actions">
+          <a href="#booking" class="btn-solid" style="font-size:0.72rem;padding:0.7rem 1.2rem;">Rezervo</a>
+          <a href="#map" class="btn-outline" style="font-size:0.72rem;padding:0.7rem 1.2rem;">Harta</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section" id="map">
+  <div class="map-wrap">
+    <div class="map-tabs">
+      <div class="map-tab active" onclick="setTab(this,'Tiranë — Blloku, Rr. Pjetër Bogdani 4')">Tiranë</div>
+      <div class="map-tab" onclick="setTab(this,'Durrës — Bulevardi Epidamn')">Durrës</div>
+      <div class="map-tab" onclick="setTab(this,'Vlorë — Bulevardi Ismail Qemali')">Vlorë</div>
+    </div>
+    <div class="map-placeholder">
+      <div class="map-pin">📍</div>
+      <p id="mapLabel">Tiranë — Blloku, Rr. Pjetër Bogdani 4</p>
+      <small>Zëvendëso me Google Maps iframe</small>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING + CONTACT -->
+<section class="booking-section" id="booking">
+  <div class="booking-inner">
+    <!-- INFO -->
+    <div class="booking-info">
+      <p class="section-kicker">● Kontakto & Rezervo</p>
+      <h2 class="section-title" style="color:var(--white);">Rezervo<br>vizitën tënde</h2>
+      <p class="booking-sub">Ekzaminimi i syve dhe konsultimi janë falas. Zgjedh dyqanin, orarin dhe shërbimin dhe ne konfirmojmë brenda 1 ore.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-label">WhatsApp / Tel</div>
+          <div class="contact-val">+355 69 300 0001</div>
+          <div class="contact-sub">Përgjigje të menjëhershme gjatë orarit të punës</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-label">Email</div>
+          <div class="contact-val">info@adcoptics.al</div>
+          <div class="contact-sub">Përgjigje brenda 2 orëve</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-label">Instagram</div>
+          <div class="contact-val">@adcoptics.al</div>
+          <div class="contact-sub">Shiko koleksionet e reja dhe oferta</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-label">Orari i Punës</div>
+          <div class="contact-val">E Hënë – E Shtunë</div>
+          <div class="contact-sub">09:00 – 20:00 · E Diel: 10:00 – 18:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div>
+      <div class="booking-form" id="bookingForm">
+        <div class="form-head">
+          <h3>Rezervo Vizitën Tënde</h3>
+          <p>Plotëso formularin — do të konfirmojmë brenda 1 ore.</p>
+        </div>
+        <div class="form-body">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Emri *</label>
+              <input type="text" id="fname" placeholder="Emri juaj">
+            </div>
+            <div class="form-group">
+              <label>Mbiemri *</label>
+              <input type="text" id="lname" placeholder="Mbiemri juaj">
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Telefon *</label>
+              <input type="tel" id="phone" placeholder="+355 6X XXX XXXX">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="email@juaj.al">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Dyqani *</label>
+            <select id="store">
+              <option value="">Zgjidhni dyqanin...</option>
+              <option>Tiranë — Blloku</option>
+              <option>Durrës — Bulevardi Epidamn</option>
+              <option>Vlorë — Bulevardi Ismail Qemali</option>
+            </select>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Shërbimi</label>
+              <select id="service">
+                <option value="">Zgjidhni...</option>
+                <option>Ekzaminim i Syve (Falas)</option>
+                <option>Blerje Kornize + Thjerrëza</option>
+                <option>Lente Kontakti</option>
+                <option>Riparim Syze</option>
+                <option>Konsultim i Përgjithshëm</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Data e Preferuar</label>
+              <input type="date" id="date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mesazh (opsional)</label>
+            <textarea id="message" rows="3" placeholder="Çfarë dëshiron të shohësh apo kontrollosh?"></textarea>
+          </div>
+          <button class="form-submit" onclick="submitBooking()">Rezervo Vizitën Falas →</button>
+        </div>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">🎉</div>
+        <h3>Rezervimi u bë me sukses!</h3>
+        <p>Do t'ju kontaktojmë brenda 1 ore për të konfirmuar orarin. Faleminderit!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ADC<span class="dot">.</span>Optics</div>
+  <ul class="footer-links">
+    <li><a href="koleksionet.html">Koleksionet</a></li>
+    <li><a href="sherbime.html">Shërbime</a></li>
+    <li><a href="dyqanet.html">Dyqanet</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+  </ul>
+  <div class="footer-copy">© 2024 ADC Optics. Të gjitha të drejtat e rezervuara.</div>
+</footer>
+
+<script>
+  function setTab(el, label) {
+    document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('mapLabel').textContent = label;
+  }
+
+  function submitBooking() {
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const store = document.getElementById('store').value;
+
+    const required = [{id:'fname',val:fname},{id:'lname',val:lname},{id:'phone',val:phone},{id:'store',val:store}];
+    let valid = true;
+    required.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (!f.val) { el.style.borderColor = 'var(--coral)'; valid = false; }
+      else el.style.borderColor = '';
+    });
+    if (!valid) return;
+
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Duke dërguar...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('bookingForm').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    }, 1200);
+  }
+</script>
+
+</body>
+</html>
